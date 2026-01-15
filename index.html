@@ -3,11 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#121418">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Futures Position Calculator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,33 +17,60 @@
         <header>
             <h1>Futures Calc</h1>
             <p>Risk & Position Sizer</p>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+                <!-- Sun Icon -->
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <!-- Moon Icon -->
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
         </header>
 
-        <main class="card">
+        <main>
             <!-- Input Section -->
-            <div class="input-group">
-                <label for="contract-select">Contract</label>
-                <select id="contract-select"></select>
-                <div class="info-bar">
-                    <span class="info-item">Tick Value: <strong id="info-tick-value">...</strong></span>
-                    <span class="info-item">Tick Size: <strong id="info-tick-size">...</strong></span>
+            <section class="card mb-4">
+                <div class="input-group">
+                    <label for="contract-select">Contract</label>
+                    <select id="contract-select">
+                        <!-- Populated by JS -->
+                    </select>
+                    <div class="info-bar">
+                        <span class="info-item">Tick Value: <strong id="info-tick-value">...</strong></span>
+                        <span class="info-item">Tick Size: <strong id="info-tick-size">...</strong></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="input-group">
-                <label for="risk-input">Risk ($)</label>
-                <input type="number" id="risk-input" placeholder="e.g. 500" inputmode="decimal">
-            </div>
+                <div class="input-group">
+                    <label for="commission-input">Comm / Fee (RT $)</label>
+                    <input type="number" id="commission-input" placeholder="e.g. 4.00" inputmode="decimal">
+                </div>
 
-            <div class="input-group">
-                <label for="stop-input">Stop (Ticks)</label>
-                <input type="number" id="stop-input" placeholder="e.g. 10" inputmode="numeric">
-            </div>
+                <div class="input-group">
+                    <label for="risk-input">Risk Amount ($)</label>
+                    <input type="number" id="risk-input" placeholder="e.g. 500" inputmode="decimal">
+                </div>
 
-            <hr class="divider">
+                <div class="input-group">
+                    <label for="stop-input">Stop Loss (Ticks)</label>
+                    <input type="number" id="stop-input" placeholder="e.g. 10" inputmode="numeric">
+                </div>
+            </section>
 
             <!-- Results Section -->
-            <div class="result-card">
+            <section class="card result-card">
                 <div class="main-result">
                     <span class="result-label">Position Size</span>
                     <span class="contract-count" id="result-contracts">0</span>
@@ -63,8 +86,16 @@
                         <h3>Total Risk</h3>
                         <p id="result-total-risk">$0.00</p>
                     </div>
+                    <div class="stat-item">
+                        <h3>Total Fees</h3>
+                        <p id="result-total-fees" class="text-warning">$0.00</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Net Total</h3>
+                        <p id="result-net-total">$0.00</p>
+                    </div>
                 </div>
-            </div>
+            </section>
         </main>
     </div>
 
