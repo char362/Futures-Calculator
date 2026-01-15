@@ -16,14 +16,22 @@ class FuturesCalculator {
             const found = contracts.find(c => c.symbol === this.savedContract);
             if (found) this.selectedContract = found;
         }
+
+        // Load commission from contract if not manually saved, or override?
+        // User wants automatic, so let's default to the contract's fee on load/change
+        // But if they saved a custom one, maybe keep it? 
+        // Actually, user said "I want fee part automatically", implying they don't want to type it.
+        // So let's prioritize the contract's default fee.
+
+        this.commission = this.selectedContract.commission;
+        this.commInput.value = this.commission.toFixed(2);
+
         if (this.savedRisk) this.riskInput.value = this.savedRisk;
         if (this.savedStop) this.stopInput.value = this.savedStop;
-        if (this.savedComm) this.commInput.value = this.savedComm;
 
-        // Sync internal state with inputs
+        // Sync internal state
         this.riskAmount = parseFloat(this.riskInput.value) || 0;
         this.stopLossTicks = parseFloat(this.stopInput.value) || 0;
-        this.commission = parseFloat(this.commInput.value) || 0;
 
         this.initEvents();
         this.updateContractInfo();
@@ -58,6 +66,11 @@ class FuturesCalculator {
         this.contractSelect.addEventListener('change', (e) => {
             const symbol = e.target.value;
             this.selectedContract = contracts.find(c => c.symbol === symbol);
+
+            // Auto-update commission for Tradovate
+            this.commission = this.selectedContract.commission;
+            this.commInput.value = this.commission.toFixed(2);
+
             this.calculate();
             this.updateContractInfo();
             this.saveSettings();
