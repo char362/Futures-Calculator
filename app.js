@@ -153,8 +153,14 @@ class FuturesCalculator {
 
         const riskPerContract = this.stopLossTicks * this.selectedContract.tickValue;
 
-        // Floor the result to ensure we don't exceed risk
-        const numberOfContracts = Math.floor(this.riskAmount / riskPerContract);
+        // 1. Enforce Minimum Risk of $200 (User Request)
+        let riskToUse = this.riskAmount;
+        if (riskToUse < 200) {
+            riskToUse = 200;
+        }
+
+        // 2. Round UP (Ceil) to ensure we always meet or exceed that risk
+        const numberOfContracts = Math.ceil(riskToUse / riskPerContract);
         const actualTotalRisk = numberOfContracts * riskPerContract;
 
         // Fee Calc (Round Trip)
